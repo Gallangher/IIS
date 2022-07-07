@@ -1,5 +1,10 @@
+# Script collect almost all information from IIS about websites.
+
+# author:
+# Krzysztof Gerus
 # Gallanger - G.IT Solution
 # 
+
 
 
 Import-Module WebAdministration
@@ -63,6 +68,7 @@ foreach ($Site in $Websites) {
                         $obj | Add-Member Header $Bindings2[2]
                         $obj | Add-member AuthAnon $Anon.value
                         $obj | Add-member AuthBasic $basic.value
+                        $obj | Add-member WinAuth $winAuth.value
                         $obj | Add-member Status $status
 
                         $obj | Add-Member ApplicationPool $applicationPool
