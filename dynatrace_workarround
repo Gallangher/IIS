@@ -1,0 +1,39 @@
+# Implement Dynatrace workarround
+# Add registry key in remote host
+
+
+$servers = 
+"SVFL-WEB-P021",
+"SVFL-WEB-P022",
+"SVFL-WEB-P023",
+"SVFL-WEB-P024",
+"SVFL-WEB-A021",
+"SVFL-WEB-A022",
+"SVFL-WEB-A023",
+"SVFL-WEB-A024",
+"SVFL-WEB-O021",
+"SVFL-WEB-O022",
+"SVFL-WEB-O023",
+"SVFL-WEB-O024",
+"SVFL-WEB-T021",
+"SVFL-WEB-T022",
+"SVFL-WEB-T023",
+"SVFL-WEB-T024"
+
+$RegPath1 = "HKLM:\SOFTWARE\McAfee\Endpoint\Ips\BO\"
+$RegPath2 = "HKLM:\SOFTWARE\Wow6432Node\McAfee\EndPoint\Ips\BO\"
+
+foreach ( $server in $servers)
+{
+# Write-Host $server
+
+Enter-PSSession -ComputerName $server
+
+New-ItemProperty -Path $RegPath1 -Name dwBOCompatibilityMode -Value 1 -PropertyType DWORD -Force
+New-ItemProperty -Path $RegPath2 -Name dwBOCompatibilityMode -Value 1 -PropertyType DWORD -Force
+
+EXIT
+
+
+}
+
