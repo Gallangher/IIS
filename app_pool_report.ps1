@@ -30,6 +30,9 @@ foreach ($Site in $Websites) {
     $winAuth = get-WebConfigurationProperty -Filter /system.webServer/security/authentication/WindowsAuthentication -Name Enabled -PSPath IIS:\ -location $site.name | select-object Value
     $basic = get-WebConfigurationProperty -Filter /system.webServer/security/authentication/BasicAuthentication -Name Enabled -PSPath IIS:\ -location $site.name | select-object Value
     $AspNetImpersonation = Get-WebConfigurationProperty -filter "system.web/identity" -name "impersonate" -PSPath IIS:\ -location $site.name | select-object Value
+$digestAuthentication = get-WebConfigurationProperty -Filter /system.webServer/security/authentication/digestAuthentication -Name Enabled -PSPath IIS:\ -location $site.name | select-object Value 
+$iisClientCertificateMappingAuthentication = get-WebConfigurationProperty -Filter /system.webServer/security/authentication/iisClientCertificateMappingAuthentication -Name Enabled -PSPath IIS:\ -location $site.name | select-object Value
+$clientCertificateMappingAuthentication = get-WebConfigurationProperty -Filter /system.webServer/security/authentication/clientCertificateMappingAuthentication -Name Enabled -PSPath IIS:\ -location $site.name | select-object Value
 
   
 
@@ -57,6 +60,10 @@ foreach ($Site in $Websites) {
             $obj | Add-member WinAuth $winAuth.value
             $obj | Add-member AuthBasic $basic.value
             $obj | Add-member AspNetImpersonation $AspNetImpersonation.value
+            $obj | Add-member DigestAuth $digestAuthentication.Value 
+            $obj | Add-member IISClientCert $iisClientCertificateMappingAuthentication.value  
+            $obj | Add-member ClientAuth  $clientCertificateMappingAuthentication.value
+
             
 
             $obj | Add-member Status $status
