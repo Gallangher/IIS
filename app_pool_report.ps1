@@ -1,4 +1,18 @@
+<#
+NOTES:
+Collect information about websites, application pools hosted on IIS
 
+Background: create a report contains following columns:
+Host ApplicationPool_managedRuntimeVersion ApplicationPool_managedPipelineMode FullSiteName State Envinroment SiteID ItemXPath Path Logs Protocol Port Header Aiuthentication methods  Status ApplicationPool ApplicationPool_Name ApplicationPool_UserName ApplicationPool_Identity ApplicationPool_site ApplicationPool_UserPass
+
+Script generate a CSV file in c:\temp\folder using hostname and timestap as unique filename
+
+AUTHOR:
+G.IT Solution
+
+
+
+#>
 
 Import-Module WebAdministration
 
@@ -37,7 +51,6 @@ foreach ($Site in $Websites) {
    
 #####
 
-
     Do{
         if( $Bindings[($i)] -notlike "sslFlags=*"){
             [string[]]$Bindings2 = $Bindings[($i+1)].Split(":")
@@ -66,21 +79,15 @@ foreach ($Site in $Websites) {
             $obj | Add-member IISClientCert $iisClientCertificateMappingAuthentication.value  
             $obj | Add-member ClientAuth  $clientCertificateMappingAuthentication.value
             $obj | Add-member FormsAuth $formsAuth.mode 
-
-            
-
             $obj | Add-member Status $status
-
-            $obj | Add-Member ApplicationPool $applicationPool
-           
+            $obj | Add-Member ApplicationPool $applicationPool          
             $obj | Add-Member ApplicationPool_Name      $appPoolDetails.name
             $obj | Add-Member ApplicationPool_UserName  $appPoolDetails.processModel.userName
-           
             $obj | Add-Member ApplicationPool_Identity  $appPoolDetails.processModel.identityType
             $obj | add-Member ApplicationPool_site      $appPoolDetails.state
-         $obj | Add-Member ApplicationPool_UserPass  $appPoolDetails.processModel.password
+            $obj | Add-Member ApplicationPool_UserPass  $appPoolDetails.processModel.password  #password in plain text
 
-           $obj | export-csv "c:\temp\$hostname-$filename.csv" -Append -notypeinformation
+            $obj | export-csv "c:\temp\$hostname-$filename.csv" -Append -notypeinformation
             $i=$i+2
         }
         else{$i=$i+1}
