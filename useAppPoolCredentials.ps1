@@ -1,0 +1,1 @@
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST'  -filter system.webServer/security/authentication/windowsAuthentication -name 'useAppPoolCredentials' -value True -location <nazwa witryny>
